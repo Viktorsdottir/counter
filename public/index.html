@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAcQk72KcHc4gNBkxv7p4kqb4YuRaWVRtY",
+            authDomain: "counting-1a02e.firebaseapp.com",
+            projectId: "counting-1a02e",
+            storageBucket: "counting-1a02e.appspot.com",
+            messagingSenderId: "843163757421",
+            appId: "1:843163757421:web:25efde53ada8b9923f4864"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+<p>Enemies defeated</p>
+<h1 id="10">0</h1>
+<p>This page was viewed</p>
+<h1 id="count">0</h1>
+<p>times</p>
+</body>
+</html>
