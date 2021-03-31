@@ -3,7 +3,6 @@ import * as admin from "firebase-admin";
 import * as express from "express";
 import {firestore} from "firebase-admin/lib/firestore";
 import FieldValue = firestore.FieldValue;
-import {NextFunction, Response} from "express";
 
 admin.initializeApp();
 
@@ -11,7 +10,7 @@ const db = admin.firestore();
 
 const addKillsById = async (req: any, res: any) => {
   try {
-    const uid = "239810jdklk";
+    const {uid} = req.user;
     const kills = Number(req.query.number);
     const userKillRef = await db.collection("kills").doc(uid);
     const counterKillRef = await db.collection("counters").doc("kills");
@@ -31,11 +30,10 @@ const addKillsById = async (req: any, res: any) => {
 
 const getKillsById = async (req: any, res: any) => {
   try {
-    const uid = "239810jdklk";
+    const {uid} = req.user;
     const doc = await db.doc(`kills/${uid}`).get();
     const data = doc.data();
     if (!data) {
-      console.error("document does not exist");
       return false;
     }
     const kills:number = data.kills;
@@ -51,7 +49,6 @@ const getAllKills = async (req: any, res: any) => {
     const doc = await db.doc("counters/kills").get();
     const data = doc.data();
     if (!data) {
-      console.error("document does not exist");
       return false;
     }
     const count:number = data.count;
@@ -64,25 +61,21 @@ const getAllKills = async (req: any, res: any) => {
 
 const api = express();
 
-//Decodes the Firebase JSON Web Token
-api.use(decodeIDToken);
-
-async function decodeIDToken(req: any, res: Response, next: NextFunction) {
-    if (req.headers?.authorization?.startsWith('Bearer ')) {
-        const idToken = req.headers.authorization.split('Bearer ')[1];
-
-        try {
-            req.user = await admin.auth().verifyIdToken(idToken)
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    next();
+// Decodes the Firebase JSON Web Token
+async function decodeIDToken(req: any, res: any, next: any) {
+  if (req.headers?.authorization?.startsWith("Bearer ")) {
+    const idToken = req.headers.authorization.split("Bearer ")[1];
+    admin.auth().verifyIdToken(idToken).then((decodedIdToken) => {
+      req.user = decodedIdToken;
+      return next();
+    }).catch((error) => {
+      console.error("Error while verifying Firebase ID token:", error);
+      return res.status(403).send("Unauthorized");
+    });
+  }
 }
 
-
-api.get("/getMyKills", getKillsById);
+api.get("/getMyKills", decodeIDToken, getKillsById);
 api.get("/getAllKills", getAllKills);
-api.post("/addKills", addKillsById);
+api.post("/addKills", decodeIDToken, addKillsById);
 exports.api = functions.https.onRequest(api);
