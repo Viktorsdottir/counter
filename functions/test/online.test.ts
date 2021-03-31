@@ -1,23 +1,26 @@
 import "jest";
-
+import supertest from "supertest";
 import * as functions from "firebase-functions-test";
 import * as admin from "firebase-admin";
-import {createUserRecord, getAllKills } from "../src";
+import {api, createUserRecord} from "../src";
 
-const testEnv = functions({
-  databaseURL: "https://counting-1a02e.firebaseio.com",
-  storageBucket: "counting-1a02e.appspot.com",
-  projectId: "counting-1a02e",
-}, "./service-account.json");
+const testEnv = functions(
+    {
+      databaseURL: "https://counting-1a02e.firebaseio.com",
+      storageBucket: "counting-1a02e.appspot.com",
+      projectId: "counting-1a02e",
+    },
+    "./service-account.json"
+);
 
 describe("createUserRecordTest", () => {
-  let wrapped:any;
+  let wrapped: any;
   // Applies only to tests in this describe block
   beforeAll(() => {
     wrapped = testEnv.wrap(createUserRecord);
   });
 
-  afterAll( () => {
+  afterAll(() => {
     admin.firestore().doc("kills/dummyUser").delete();
     testEnv.cleanup();
   });
@@ -32,21 +35,32 @@ describe("createUserRecordTest", () => {
   });
 });
 
-
-describe('makePayment', () => {
-
-  test('it returns a successful response with a valid card', () => {
-    const req = { query: { card: '4242424242424242' } };
-    const res = {
-      send: (payload) => {
-        expect(payload).toBe('Payment processed!');
-      },
-    };
-    makePayment(req as any, res as any);
+describe("GET /getAllKills", function() {
+  it("respond with json containing all kills", function(done) {
+    supertest(api)
+        .get("/getAllKills")
+        .set("qAccept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200, done);
   });
-
 });
 
-describe('getAllKIlls', () => {
-  test('should fetch total number of kills', async () => {
+describe("POST /addKills", function() {
+  it("respond with json containing kills for a specific user", function(done) {
+    supertest(api)
+        .post("/addKills")
+        .set("qAccept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200, done);
+  });
+});
 
+describe("GET /getMyKills", function() {
+  it("respond with json containing kills for a specific user", function(done) {
+    supertest(api)
+        .get("/getMyKills")
+        .set("qAccept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200, done);
+  });
+});
