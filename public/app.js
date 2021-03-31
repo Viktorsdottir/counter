@@ -3,9 +3,12 @@ const increment = firebase.firestore.FieldValue.increment(1);
 const visitorsRef = db.collection("counters").doc("webvisitors");
 visitorsRef.update({ count: increment });
 
+
+const enemyKillsRef = db.collection("counters").doc("kills");
+
 const countEl = document.getElementById('count');
 
-visitorsRef.onSnapshot((doc) => {
+enemyKillsRef.onSnapshot((doc) => {
     if (doc.exists) {
         console.log("Document data:", doc.data());
         countEl.innerHTML = doc.data().count
@@ -14,6 +17,7 @@ visitorsRef.onSnapshot((doc) => {
         console.log("No such document!");
     }
 })
+
 
 
 
