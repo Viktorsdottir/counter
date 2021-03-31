@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/48268478/in-firebase-how-to-generate-an-idtoken-on-the-server-for-testing-purposes

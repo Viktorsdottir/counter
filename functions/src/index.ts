@@ -8,7 +8,17 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-const addKillsById = async (req: any, res: any) => {
+export const createUserRecord = functions.auth
+    .user()
+    .onCreate((user, context) => {
+      return admin
+          .firestore()
+          .doc(`kills/${user.uid}`)
+          .set({kills: 0});
+    });
+
+
+export const addKillsById = async (req: any, res: any) => {
   try {
     const {uid} = req.user;
     const kills = Number(req.query.number);
@@ -28,7 +38,7 @@ const addKillsById = async (req: any, res: any) => {
   }
 };
 
-const getKillsById = async (req: any, res: any) => {
+export const getKillsById = async (req: any, res: any) => {
   try {
     const {uid} = req.user;
     const doc = await db.doc(`kills/${uid}`).get();
@@ -44,7 +54,7 @@ const getKillsById = async (req: any, res: any) => {
 };
 
 
-const getAllKills = async (req: any, res: any) => {
+export const getAllKills = async (req: any, res: any) => {
   try {
     const doc = await db.doc("counters/kills").get();
     const data = doc.data();
