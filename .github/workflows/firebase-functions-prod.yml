@@ -1,21 +1,17 @@
 name: Deploy on PROD
-'on':
+on:
   push:
     tags:
       - v*
 
 jobs:
   deploy_to_firebase_production:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout the repository
         uses: actions/checkout@master
-
       - name: GitHub Action for Firebase
         uses: w9jds/firebase-action@v2.0.0
-      - name: Deploy cloudfunction to prod
         with:
           args: deploy --only functions --project prod -f
         env:
