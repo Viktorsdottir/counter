@@ -16,13 +16,17 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@master
 
+      - name: Install npm packages
+          run: |
+            cd functions
+            npm install
+
       - name: GitHub Action for Firebase
         uses: w9jds/firebase-action@v2.0.0
-
+      - name: Deploy cloudfunction to prod
         with:
           args: deploy --only functions --project prod -f
         env:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COUNTING_1A02E }}'
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           projectId: counting-1a02e
-          PROJECT_PATH: "functions/"

@@ -1,6 +1,6 @@
 {
   "projects": {
     "default": "counting-1a02e",
-    "test": "counting-1a02e"
+    "prod": "counting-1a02e"
   }
 }
