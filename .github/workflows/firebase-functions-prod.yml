@@ -1,8 +1,5 @@
 name: Deploy on PROD
-
-on:
-  workflow_dispatch:
-
+'on':
   push:
     tags:
       - v*
@@ -15,11 +12,6 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@master
-
-      - name: Install npm packages
-          run: |
-            cd functions
-            npm install
 
       - name: GitHub Action for Firebase
         uses: w9jds/firebase-action@v2.0.0
