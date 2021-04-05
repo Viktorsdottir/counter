@@ -45,7 +45,8 @@ describe("GET /getAllKills", function() {
   });
 });
 
-/*Add
+
+/* Add
 describe("POST /addKills", function() {
   it("respond with json containing kills for a specific user", function(done) {
     supertest(api)
