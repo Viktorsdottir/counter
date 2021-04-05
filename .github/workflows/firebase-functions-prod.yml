@@ -6,8 +6,6 @@ on:
     tags:
       - v*
 
-description: Deploy functions
-runs:
 jobs:
   deploy_functions_to_firebase_production:
     runs-on: ubuntu-latest
