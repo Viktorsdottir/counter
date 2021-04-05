@@ -6,6 +6,8 @@ on:
     tags:
       - v*
 
+description: Deploy functions
+runs:
 jobs:
   deploy_functions_to_firebase_production:
     runs-on: ubuntu-latest
@@ -20,9 +22,7 @@ jobs:
           node-version: 12
       - name: Install Dependencies
         run: npm install
-      - name: Run a linter with fix
-        run: npm run lint -- --fix
       - name: install firebase
         run: npm i firebase-tools -g
       - name: deploy
-        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }} --project=counting-1a02e
