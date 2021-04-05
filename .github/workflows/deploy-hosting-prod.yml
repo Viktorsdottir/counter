@@ -1,6 +1,8 @@
 name: Deploy to Live Channel
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
